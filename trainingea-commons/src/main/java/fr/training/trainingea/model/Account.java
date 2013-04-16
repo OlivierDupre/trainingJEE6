@@ -23,12 +23,14 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    
     @JoinColumns({
         @JoinColumn(name = "owner_firstName", referencedColumnName = "firstName"),
         @JoinColumn(name = "owner_lastName", referencedColumnName = "lastName")
     })
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer owner;
+    
     @JoinColumns({
         @JoinColumn(name = "ownerSecondary_firstName", referencedColumnName = "firstName"),
         @JoinColumn(name = "ownerSecondary_lastName", referencedColumnName = "lastName")
