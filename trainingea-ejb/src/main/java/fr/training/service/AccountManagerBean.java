@@ -1,5 +1,6 @@
 package fr.training.service;
 
+import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.service.AccountManagerLocal;
 import java.sql.Connection;
@@ -29,9 +30,6 @@ public class AccountManagerBean implements AccountManagerLocal {
     @Resource
     EJBContext ejbContext;
 
-    // Seulement en TransactionManagementType.BEAN
-//    @Resource
-//    UserTransaction userTransaction;
     @Override
     public Customer createCustomer(String login, String firstName, String lastName, String address, int age) {
         Customer customer = new Customer(login, firstName, lastName, address, age);
@@ -43,11 +41,24 @@ public class AccountManagerBean implements AccountManagerLocal {
 
             // Précise à la transaction qu'il y a un problème et qu'il faudra faire un rollback plutôt qu'un commit
             ejbContext.setRollbackOnly();
-
-//            throw new RuntimeException(ex); // Pour que ce soit intercepté par le Server d'Appli et qu'il fasse un Rollback
         }
 
         return customer;
+    }
+
+    @Override
+    public Account createAccount(String login) {
+        Account account = new Account(new Customer(login));
+
+        try {
+            save(account);
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountManagerBean.class.getName()).log(Level.SEVERE, null, ex);
+
+            throw new RuntimeException(ex); // Pour que ce soit intercepté par le Server d'Appli et qu'il fasse un Rollback
+        }
+
+        return account;
     }
 
     private void save(Customer customer) throws SQLException {
@@ -61,10 +72,22 @@ public class AccountManagerBean implements AccountManagerLocal {
             statement.setString(4, customer.getAddress());
             statement.setInt(5, customer.getAge());
 
-//            userTransaction.begin();
             statement.execute();
         } finally {
-//            userTransaction.commit();
+            connection.close();
+        }
+    }
+
+    private void save(Account account) throws SQLException {
+        Connection connection = dataSource.getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("insert into account (login, amount) VALUES (?, ?)");
+            statement.setString(1, account.getOwner().getLogin());
+            statement.setFloat(2, account.getAmount());
+
+            statement.execute();
+        } finally {
             connection.close();
         }
     }

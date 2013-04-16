@@ -1,5 +1,6 @@
 package fr.training.trainingea.service;
 
+import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
 
 /**
@@ -8,4 +9,6 @@ import fr.training.trainingea.model.Customer;
 public interface AccountManagerLocal {
 
     Customer createCustomer(String login, String firstName, String lastName, String address, int age);
+
+    Account createAccount(String login);
 }

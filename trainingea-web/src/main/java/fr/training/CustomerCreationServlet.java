@@ -1,15 +1,25 @@
 package fr.training;
 
+import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.service.AccountManagerLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -20,6 +30,8 @@ public class CustomerCreationServlet extends HttpServlet {
 
     @EJB
     private AccountManagerLocal accountManager;
+    @Resource
+    private UserTransaction userTransaction;
 
     /**
      * Processes requests for both HTTP
@@ -33,7 +45,10 @@ public class CustomerCreationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Customer customer = accountManager.createCustomer("dudu01", "Olivier", "Dupré", "Toulouse", 29);
+
+        String customerLogin = "Dudu";
+
+
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -47,9 +62,17 @@ public class CustomerCreationServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CustomerCreationServlet at " + request.getContextPath() + "</h1>");
-            out.printf("Bonjour %s %s de %s. Vous avez %d ans.", customer.getFirstName(), customer.getLastName(), customer.getAddress(), customer.getAge());
+
+            userTransaction.begin();
+            Customer customer = accountManager.createCustomer(customerLogin, "Olivier", "Dupré", "Toulouse", 29);
+            Account account = accountManager.createAccount(customerLogin);
+            userTransaction.commit();
+
+            out.printf("Bonjour %s %s de %s.\nVous avez %d ans.\nVous avez %f  sur voter compte.", customer.getFirstName(), customer.getLastName(), customer.getAddress(), customer.getAge(), account.getAmount());
             out.println("</body>");
             out.println("</html>");
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+            Logger.getLogger(CustomerCreationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

@@ -12,6 +12,10 @@ public class Customer {
     String login, firstName, lastName, address;
     int age;
 
+    public Customer(String login) {
+        this(login, "", "", "", 0);
+    }
+
     public Customer(String login, String firstName, String lastName, String address, int age) {
         this.login = login + "_" + nbCustomers;
         this.firstName = firstName;
