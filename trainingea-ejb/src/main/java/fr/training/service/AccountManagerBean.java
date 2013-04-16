@@ -16,6 +16,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.sql.DataSource;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -23,28 +29,29 @@ import javax.sql.DataSource;
  */
 @Stateless
 @Local(AccountManagerLocal.class)
-@TransactionManagement(TransactionManagementType.CONTAINER) // OPTIONNEL. Valeur par défaut.
+@TransactionManagement(TransactionManagementType.BEAN)
 public class AccountManagerBean implements AccountManagerLocal {
 
     @Resource(name = "jdbc/training")
     DataSource dataSource;
+    @Resource
+    UserTransaction userTransaction;
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED) // OPTIONNEL. Valeur par défaut.
     public Customer createCustomer(String login, String firstName, String lastName, String address, int age) {
         Customer customer = new Customer(login, firstName, lastName, address, age);
 
         try {
             save(customer);
-        } catch (SQLException ex) {
+        } catch (SQLException | NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException ex) {
             Logger.getLogger(AccountManagerBean.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException(ex); // Pou que ce soit intercepté par le Server d'Appli et qu'il fasse un Rollback
+            throw new RuntimeException(ex); // Pour que ce soit intercepté par le Server d'Appli et qu'il fasse un Rollback
         }
 
         return customer;
     }
 
-    private void save(Customer customer) throws SQLException {
+    private void save(Customer customer) throws SQLException, NotSupportedException, SystemException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
         Connection connection = dataSource.getConnection();
 
         try {
@@ -55,8 +62,10 @@ public class AccountManagerBean implements AccountManagerLocal {
             statement.setString(4, customer.getAddress());
             statement.setInt(5, customer.getAge());
 
+            userTransaction.begin();
             statement.execute();
         } finally {
+            userTransaction.commit();
             connection.close();
         }
     }
