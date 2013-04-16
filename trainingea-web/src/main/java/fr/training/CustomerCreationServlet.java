@@ -5,6 +5,8 @@ import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.service.AccountManagerLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -65,13 +67,13 @@ public class CustomerCreationServlet extends HttpServlet {
 
             userTransaction.begin();
             Customer customer = accountManager.createCustomer(customerLogin, "Olivier", "Dupré", "Toulouse", 29);
-            Account account = accountManager.createAccount(customerLogin);
+            Future<Account> accountCreationResult = accountManager.createAccount(customerLogin);
             userTransaction.commit();
 
-            out.printf("Bonjour %s %s de %s.\nVous avez %d ans.\nVous avez %f  sur voter compte.", customer.getFirstName(), customer.getLastName(), customer.getAddress(), customer.getAge(), account.getAmount());
+            out.printf("Bonjour %s %s de %s.<br>Vous avez %d ans.<br>Vous avez %f  sur votre compte.", customer.getFirstName(), customer.getLastName(), customer.getAddress(), customer.getAge(), accountCreationResult.get().getAmount());
             out.println("</body>");
             out.println("</html>");
-        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException | InterruptedException | ExecutionException ex) {
             Logger.getLogger(CustomerCreationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();

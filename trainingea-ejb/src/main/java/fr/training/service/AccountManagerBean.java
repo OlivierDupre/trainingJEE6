@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -47,7 +49,8 @@ public class AccountManagerBean implements AccountManagerLocal {
     }
 
     @Override
-    public Account createAccount(String login) {
+    @Asynchronous
+    public AsyncResult<Account> createAccount(String login) {
         Account account = new Account(new Customer(login));
 
         try {
@@ -55,10 +58,10 @@ public class AccountManagerBean implements AccountManagerLocal {
         } catch (SQLException ex) {
             Logger.getLogger(AccountManagerBean.class.getName()).log(Level.SEVERE, null, ex);
 
-            throw new RuntimeException(ex); // Pour que ce soit intercepté par le Server d'Appli et qu'il fasse un Rollback
+            throw new RuntimeException(ex); // Pour que ce soit intercepté par le Serveur d'Appli et qu'il fasse un Rollback
         }
 
-        return account;
+        return new AsyncResult<>(account);
     }
 
     private void save(Customer customer) throws SQLException {
