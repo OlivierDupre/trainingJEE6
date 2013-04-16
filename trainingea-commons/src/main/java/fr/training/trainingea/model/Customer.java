@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 /**
@@ -13,14 +14,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "customer")
+@IdClass(CustomerPK.class)
 public class Customer implements Serializable {
 
-    private static long nbCustomers = Math.abs(new Random().nextInt());
     @Id
-    private String login;
     @Column(name = "firstName")
     private String firstName;
-    private String lastName, address;
+    @Id
+    @Column(name = "lastName")
+    private String lastName;
+    private String address;
     private int age;
 
     public Customer() {
@@ -31,19 +34,10 @@ public class Customer implements Serializable {
     }
 
     public Customer(String login, String firstName, String lastName, String address, int age) {
-        this.login = login + "_" + nbCustomers++;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.age = age;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getFirstName() {

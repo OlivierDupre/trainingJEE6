@@ -3,6 +3,7 @@ package fr.training.trainingea.model;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,8 +22,7 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @JoinColumn(name = "login")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Customer owner;
     private float amount;
 
