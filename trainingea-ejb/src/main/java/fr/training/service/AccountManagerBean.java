@@ -33,13 +33,7 @@ public class AccountManagerBean implements AccountManagerLocal {
 
     @Override
     public Account createAccount(Customer owner) {
-//        Account account = new Account(owner);
-
-        Account account = new Account();
-        Customer cust = new Customer();
-        cust.setFirstName(owner.getFirstName());
-        cust.setLastName(owner.getLastName());
-        account.setOwner(cust);
+        Account account = new Account(owner);
 
         entityManager.persist(account);
 
