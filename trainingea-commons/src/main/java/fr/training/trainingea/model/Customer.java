@@ -1,23 +1,37 @@
 package fr.training.trainingea.model;
 
+import java.io.Serializable;
 import java.util.Random;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author shuttle
  */
-public class Customer {
+@Entity
+@Table(name = "customer")
+public class Customer implements Serializable {
 
-    private final static int nbCustomers = new Random().nextInt();
-    String login, firstName, lastName, address;
-    int age;
+    private static long nbCustomers = Math.abs(new Random().nextInt());
+    @Id
+    private String login;
+    @Column(name = "firstName")
+    private String firstName;
+    private String lastName, address;
+    private int age;
+
+    public Customer() {
+    }
 
     public Customer(String login) {
         this(login, "", "", "", 0);
     }
 
     public Customer(String login, String firstName, String lastName, String address, int age) {
-        this.login = login + "_" + nbCustomers;
+        this.login = login + "_" + nbCustomers++;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
