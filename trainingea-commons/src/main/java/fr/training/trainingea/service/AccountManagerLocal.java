@@ -19,4 +19,6 @@ public interface AccountManagerLocal {
     void addPrimaryAccount(CustomerPK customerPK, float deposite);
 
     List<Account> findAccountsForCustomer(String firstName, String lastName);
+
+    void updateCustomer(Customer customer);
 }

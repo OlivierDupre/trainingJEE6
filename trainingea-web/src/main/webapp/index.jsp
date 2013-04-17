@@ -12,5 +12,6 @@
         <a href="createCustomer">createCustomer</a><br/>
         <a href="addAccount">addAccount</a><br/>
         <a href="findAccounts">findAccounts</a><br/>
+        <a href="loadCustomer">loadCustomer</a><br/>
     </body>
 </html>

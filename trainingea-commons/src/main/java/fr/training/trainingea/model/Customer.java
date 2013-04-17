@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  *
@@ -20,6 +21,10 @@ import javax.persistence.Table;
 @NamedQuery(name="Customer.findAllAccounts", query = "select a from Account a where a.owner = :customer")
 public class Customer implements Serializable {
 
+    // Gestion identique à celle de l'OPTIMISTIC LOCK.
+    @Version
+    private int version;
+    
     @Id
     @Column(name = "firstName")
     private String firstName;

@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -39,15 +38,6 @@ public class Account implements Serializable {
     private float amount;
 
     public Account() {
-    }
-
-    public Account(Customer owner) {
-        this(owner, 0);
-    }
-
-    public Account(Customer owner, float amount) {
-        this.owner = owner;
-        this.amount = amount;
     }
 
     public Customer getOwner() {
