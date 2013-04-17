@@ -1,7 +1,10 @@
 package fr.training;
 
+import static fr.training.CustomerCreationServlet.FIRST_NAME;
+import static fr.training.CustomerCreationServlet.LAST_NAME;
 import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
+import fr.training.trainingea.model.CustomerPK;
 import fr.training.trainingea.service.AccountManagerLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,15 +28,11 @@ import javax.transaction.UserTransaction;
  *
  * @author shuttle
  */
-@WebServlet(name = "CustomerCreationServlet", urlPatterns = {"/createCustomer"})
-public class CustomerCreationServlet extends HttpServlet {
+@WebServlet(name = "AccountAffectationServlet", urlPatterns = {"/addAccount"})
+public class AccountAffectationServlet extends HttpServlet {
 
-    public static final String FIRST_NAME = "Olivier";
-    public static final String LAST_NAME = "Dupré";
     @EJB
     private AccountManagerLocal accountManager;
-    @Resource
-    private UserTransaction userTransaction;
 
     /**
      * Processes requests for both HTTP
@@ -47,7 +46,6 @@ public class CustomerCreationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -55,22 +53,18 @@ public class CustomerCreationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CustomerCreationServlet</title>");
-
+            out.println("<title>Servlet AccountAffectationServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CustomerCreationServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AccountAffectationServlet at " + request.getContextPath() + "</h1>");
 
-            userTransaction.begin();
-            Customer customer = accountManager.createCustomer(FIRST_NAME, LAST_NAME, "Toulouse", 29);
-            Account account = accountManager.createAccount(customer);
-            userTransaction.commit();
+            accountManager.addPrimaryAccount(new CustomerPK(FIRST_NAME, LAST_NAME), 2000);
+            Customer customer = accountManager.findCustomer(FIRST_NAME, LAST_NAME);
 
-            out.printf("Bonjour %s %s de %s.<br>Vous avez %d ans.<br>Vous avez %5.2f€ sur votre compte.", customer.getFirstName(), customer.getLastName(), customer.getAddress(), customer.getAge(), account.getAmount());
+            out.printf("Bonjour %s %s de %s.<br>Vous avez %d compte(s).", customer.getFirstName(), customer.getLastName(), customer.getAddress(), customer.getNbAccounts());
+
             out.println("</body>");
             out.println("</html>");
-        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
-            Logger.getLogger(CustomerCreationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

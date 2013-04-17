@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -23,14 +24,12 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    
     @JoinColumns({
         @JoinColumn(name = "owner_firstName", referencedColumnName = "firstName"),
         @JoinColumn(name = "owner_lastName", referencedColumnName = "lastName")
     })
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer owner;
-    
     @JoinColumns({
         @JoinColumn(name = "ownerSecondary_firstName", referencedColumnName = "firstName"),
         @JoinColumn(name = "ownerSecondary_lastName", referencedColumnName = "lastName")
@@ -59,6 +58,14 @@ public class Account implements Serializable {
         this.owner = owner;
     }
 
+    public void setOwnerSecondary(Customer ownerSecondary) {
+        this.ownerSecondary = ownerSecondary;
+    }
+
+    public Customer getOwnerSecondary() {
+        return ownerSecondary;
+    }
+
     public float getAmount() {
         return amount;
     }
@@ -73,13 +80,5 @@ public class Account implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setOwnerSecondary(Customer ownerSecondary) {
-        this.ownerSecondary = ownerSecondary;
-    }
-
-    public Customer getOwnerSecondary() {
-        return ownerSecondary;
     }
 }

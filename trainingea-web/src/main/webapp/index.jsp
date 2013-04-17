@@ -9,6 +9,8 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <a href="createCustomer">createCustomer</a>
+        <a href="createCustomer">createCustomer</a><br/>
+        <a href="addAccount">addAccount</a><br/>
+        <a href="findAccounts">findAccounts</a><br/>
     </body>
 </html>

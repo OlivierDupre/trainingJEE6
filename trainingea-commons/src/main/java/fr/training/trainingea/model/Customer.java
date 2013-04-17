@@ -1,11 +1,13 @@
 package fr.training.trainingea.model;
 
 import java.io.Serializable;
-import java.util.Random;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "customer")
 @IdClass(CustomerPK.class)
+@NamedQuery(name="Customer.findAllAccounts", query = "select a from Account a where a.owner = :customer")
 public class Customer implements Serializable {
 
     @Id
@@ -25,15 +28,15 @@ public class Customer implements Serializable {
     private String lastName;
     private String address;
     private int age;
+    @OneToMany(mappedBy = "owner")
+    Set<Account> principalAccounts;
+    @OneToMany(mappedBy = "ownerSecondary")
+    Set<Account> secondaryAccounts;
 
     public Customer() {
     }
 
-    public Customer(String login) {
-        this(login, "", "", "", 0);
-    }
-
-    public Customer(String login, String firstName, String lastName, String address, int age) {
+    public Customer(String firstName, String lastName, String address, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -70,5 +73,33 @@ public class Customer implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Set<Account> getPrincipalAccounts() {
+        return principalAccounts;
+    }
+
+    public void setPrincipalAccounts(Set<Account> principalAccounts) {
+        this.principalAccounts = principalAccounts;
+    }
+
+    public Set<Account> getSecondaryAccounts() {
+        return secondaryAccounts;
+    }
+
+    public void setSecondaryAccounts(Set<Account> secondaryAccounts) {
+        this.secondaryAccounts = secondaryAccounts;
+    }
+
+    public int getNbAccounts() {
+        return getPrincipalAccounts().size() + getSecondaryAccounts().size();
+    }
+
+    public void addPrimaryAccount(Account account) {
+        getPrincipalAccounts().add(account);
+    }
+
+    public void addSecondaryAccount(Account account) {
+        getSecondaryAccounts().add(account);
     }
 }
