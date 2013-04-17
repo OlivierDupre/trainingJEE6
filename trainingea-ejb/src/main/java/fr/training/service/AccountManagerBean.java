@@ -17,7 +17,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 /**
- *
  * @author shuttle
  */
 @Stateless
@@ -55,6 +54,7 @@ public class AccountManagerBean implements AccountManagerLocal {
     @Override
     public List<Account> findAccountsForCustomer(String firstName, String lastName) {
         TypedQuery<Account> accounts = entityManager.createNamedQuery("Customer.findAllAccounts", Account.class);
+        
         // entityManager.getReference permet de récupérer la clef primaire de l'objet sans charger aucun des objets liés (LAZY ou même EAGER)
         accounts.setParameter("customer", entityManager.getReference(Customer.class, new CustomerPK(firstName, lastName)));
 
@@ -83,5 +83,5 @@ public class AccountManagerBean implements AccountManagerLocal {
     @Override
     public void updateCustomer(Customer customer) {
         entityManager.merge(customer);
-    }
+    } 
 }
