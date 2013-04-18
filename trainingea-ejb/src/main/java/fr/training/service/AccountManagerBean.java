@@ -29,8 +29,11 @@ public class AccountManagerBean implements AccountManagerLocal {
 
     @Override
     public Customer createCustomer(String firstName, String lastName, String address, int age) {
-        Customer customer = new Customer(firstName, lastName, address, age);
+        return createCustomer(new Customer(firstName, lastName, address, age));
+    }
 
+    @Override
+    public Customer createCustomer(Customer customer) {
         entityManager.persist(customer);
 
         return customer;

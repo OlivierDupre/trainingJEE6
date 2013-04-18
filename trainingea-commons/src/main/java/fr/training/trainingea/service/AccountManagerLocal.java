@@ -12,6 +12,8 @@ public interface AccountManagerLocal {
 
     Customer createCustomer(String firstName, String lastName, String address, int age);
 
+    Customer createCustomer(Customer customer);
+
     Account createAccount(Customer owner);
 
     Customer findCustomer(String firstName, String lastName);

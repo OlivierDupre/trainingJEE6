@@ -3,7 +3,6 @@ package fr.training;
 import static fr.training.CustomerCreationServlet.FIRST_NAME;
 import static fr.training.CustomerCreationServlet.LAST_NAME;
 import fr.training.trainingea.model.Account;
-import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.service.AccountManagerLocal;
 import java.io.IOException;
 import java.io.PrintWriter;

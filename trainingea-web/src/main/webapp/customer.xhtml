@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <f:metadata>
+        <f:viewParam name="firstName" value="#{customerManagedBean.firstName}"/>
+        <f:viewParam name="lastName" value="#{customerManagedBean.lastName}"/>
+        <f:event listener="#{customerManagedBean.loadCustomer()}" type="preRenderComponent"/>
+    </f:metadata>
+    
+    <h:head>
+        <title>Customer CRUD</title>
+    </h:head>
+    <h:body>
+        Customer Edition!
+        <h:form id="mainForm">
+            <label for="mainForm:firstName">Prénom</label>
+            <h:inputText id="firstName" value="#{customerManagedBean.firstName}"></h:inputText>
+            <label for="mainForm:lastName">Nom : </label>
+            <h:inputText id="lastName" value="#{customerManagedBean.lastName}"></h:inputText>
+            <label for="mainForm:address">Adresse : </label>
+            <h:inputText id="address" value="#{customerManagedBean.address}"></h:inputText>
+            <label for="mainForm:age">Âge : </label>
+            <h:inputText id="age" value="#{customerManagedBean.age}"></h:inputText>
+            <h:commandButton binding="#{customerManagedBean.saveButton}" action="#{customerManagedBean.save()}" value="Please, save me!" />
+        </h:form>
+    </h:body>
+</html>
+
