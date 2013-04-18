@@ -1,14 +1,9 @@
 package fr.training.beans;
 
-import javax.inject.Named;
-
 /**
  * @author shuttle
  */
-//Permet de déclarer le fait que c'est un bean qu'on pourra injecter.
-//On aurait aussi pu utiliser un Qualifier si on en avait eu un
-@Named
-public class Vehicle {
+public abstract class Vehicle {
 
     String id;
     int maxSpeed, maxPassengers;

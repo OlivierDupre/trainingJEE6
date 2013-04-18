@@ -1,5 +1,8 @@
 package fr.training.service;
 
+import fr.training.beans.Car;
+import fr.training.beans.FourWheels;
+import fr.training.beans.Transport;
 import fr.training.beans.Vehicle;
 import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
@@ -12,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -29,7 +33,9 @@ public class AccountManagerBean implements AccountManagerLocal {
     @PersistenceContext
     EntityManager entityManager;
     @Inject
-    Vehicle vehicle;
+    @FourWheels
+    @Transport
+    Instance<Vehicle> vehicles;
 
     @Override
     public Customer createCustomer(String firstName, String lastName, String address, int age) {
@@ -38,6 +44,12 @@ public class AccountManagerBean implements AccountManagerLocal {
 
     @Override
     public Customer createCustomer(Customer customer) {
+        for (Vehicle vehicle : vehicles) {
+            System.out.println("Vehicle: " + vehicle);
+            Customer vehicleCustomer = ((Car) vehicle).getCustomer();
+            System.out.printf("Driver: %s %s\n", vehicleCustomer.getFirstName(), vehicleCustomer.getLastName());
+        }
+
         entityManager.persist(customer);
 
         return customer;
