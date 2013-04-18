@@ -4,10 +4,13 @@ import fr.training.beans.Car;
 import fr.training.trainingea.model.Transport;
 import fr.training.trainingea.model.Vehicle;
 import fr.training.trainingea.model.Account;
+import fr.training.trainingea.model.Constants;
 import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.model.CustomerPK;
 import fr.training.trainingea.service.AccountManagerLocal;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -27,6 +30,8 @@ import javax.persistence.TypedQuery;
 @Stateless
 @Local(AccountManagerLocal.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@DeclareRoles({Constants.CLIENT, Constants.MANAGER})
+@RolesAllowed(Constants.MANAGER) // Le manager peut exécuter toutes les méthodes pour lesquelles aucun @RolesAllowed n'est spécifié
 public class AccountManagerBean implements AccountManagerLocal {
 
     @PersistenceContext
@@ -66,6 +71,7 @@ public class AccountManagerBean implements AccountManagerLocal {
     }
 
     @Override
+    @RolesAllowed(Constants.CLIENT) // Seul le rôle client peut faire ça.
     public Customer findCustomer(String firstName, String lastName) {
         return entityManager.find(Customer.class, new CustomerPK(firstName, lastName));
     }
