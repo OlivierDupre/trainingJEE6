@@ -83,6 +83,7 @@ public class CustomerManagedBean {
     public void loadCustomer() {
         if (customer != null && customer.getFirstName() != null && customer.getLastName() != null) {
             customer = accountManager.findCustomer(customer.getFirstName(), customer.getLastName());
+            saveButton.setStyle("color: red;");
         }
     }
 }

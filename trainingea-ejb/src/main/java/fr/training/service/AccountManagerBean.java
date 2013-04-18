@@ -1,5 +1,6 @@
 package fr.training.service;
 
+import fr.training.beans.Vehicle;
 import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.model.CustomerPK;
@@ -11,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
@@ -26,6 +28,8 @@ public class AccountManagerBean implements AccountManagerLocal {
 
     @PersistenceContext
     EntityManager entityManager;
+    @Inject
+    Vehicle vehicle;
 
     @Override
     public Customer createCustomer(String firstName, String lastName, String address, int age) {
