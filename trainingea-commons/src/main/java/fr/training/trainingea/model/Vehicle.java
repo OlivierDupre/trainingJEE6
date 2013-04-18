@@ -1,4 +1,4 @@
-package fr.training.beans;
+package fr.training.trainingea.model;
 
 /**
  * @author shuttle

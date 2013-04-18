@@ -1,4 +1,4 @@
-package fr.training.beans;
+package fr.training.trainingea.model;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -10,10 +10,11 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
+ *
  * @author shuttle
  */
 @Qualifier
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
-public @interface Transport {
+public @interface ShipQ {
 }

@@ -1,5 +1,6 @@
 package fr.training.beans;
 
+import fr.training.trainingea.model.Transport;
 import javax.inject.Inject;
 
 /**

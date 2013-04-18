@@ -1,5 +1,7 @@
 package fr.training.beans;
 
+import javax.inject.Inject;
+
 /**
  *
  * @author shuttle
@@ -8,6 +10,7 @@ package fr.training.beans;
 public class Driver {
 
     String firstName = "Oliv", lastName = "Dudu";
+    @Inject
     @Gender
     private String gender;
 
@@ -20,10 +23,10 @@ public class Driver {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName + " " +gender;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName + gender;
+        this.lastName = lastName;
     }
 }

@@ -1,9 +1,8 @@
 package fr.training.service;
 
 import fr.training.beans.Car;
-import fr.training.beans.FourWheels;
-import fr.training.beans.Transport;
-import fr.training.beans.Vehicle;
+import fr.training.trainingea.model.Transport;
+import fr.training.trainingea.model.Vehicle;
 import fr.training.trainingea.model.Account;
 import fr.training.trainingea.model.Customer;
 import fr.training.trainingea.model.CustomerPK;
@@ -33,7 +32,6 @@ public class AccountManagerBean implements AccountManagerLocal {
     @PersistenceContext
     EntityManager entityManager;
     @Inject
-    @FourWheels
     @Transport
     Instance<Vehicle> vehicles;
 
@@ -46,8 +44,10 @@ public class AccountManagerBean implements AccountManagerLocal {
     public Customer createCustomer(Customer customer) {
         for (Vehicle vehicle : vehicles) {
             System.out.println("Vehicle: " + vehicle);
-            Customer vehicleCustomer = ((Car) vehicle).getCustomer();
-            System.out.printf("Driver: %s %s\n", vehicleCustomer.getFirstName(), vehicleCustomer.getLastName());
+            if (vehicle instanceof Car) {
+                Customer vehicleCustomer = ((Car) vehicle).getCustomer();
+                System.out.printf("Driver: %s %s\n", vehicleCustomer.getFirstName(), vehicleCustomer.getLastName());
+            }
         }
 
         entityManager.persist(customer);

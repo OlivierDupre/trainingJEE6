@@ -1,5 +1,7 @@
 package fr.training.beans;
 
+import fr.training.trainingea.model.Vehicle;
+
 /**
  * @author shuttle
  */
