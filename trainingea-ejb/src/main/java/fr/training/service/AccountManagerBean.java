@@ -71,7 +71,7 @@ public class AccountManagerBean implements AccountManagerLocal {
     }
 
     @Override
-    @RolesAllowed(Constants.CLIENT) // Seul le rôle client peut faire ça.
+    @RolesAllowed({Constants.CLIENT, Constants.MANAGER}) // Seuls les rôles client et manager peuvent faire ça. -> Annule et la déclaration faite pour la classe.
     public Customer findCustomer(String firstName, String lastName) {
         return entityManager.find(Customer.class, new CustomerPK(firstName, lastName));
     }
