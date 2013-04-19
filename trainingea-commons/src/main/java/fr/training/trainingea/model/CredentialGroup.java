@@ -17,6 +17,7 @@ import javax.persistence.Table;
 public class CredentialGroup implements Serializable {
 
     @Id
+    @Column(name = "login")
     private String login;
     @Id
     @Column(name = "groupName")

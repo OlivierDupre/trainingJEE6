@@ -6,10 +6,12 @@ import fr.training.trainingea.service.CredentialManagerBeanLocal;
 import javax.ejb.EJB;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * @author shuttle
  */
+@WebListener
 public class PopulateCredentialTablesListener implements ServletContextListener {
 
     @EJB

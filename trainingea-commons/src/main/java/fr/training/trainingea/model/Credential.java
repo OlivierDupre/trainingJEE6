@@ -6,6 +6,7 @@ package fr.training.trainingea.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,10 +14,16 @@ import javax.persistence.Table;
 /**
  *
  * @author shuttle
- */@Entity @Table(name = "credentials")
+ */
+@Entity
+@Table(name = "credentials")
 public class Credential implements Serializable {
-     @Id
-    String login; String password;
+
+    @Id
+    @Column(name = "login")
+    String login;
+    @Column(name = "password")
+    String password;
 
     public String getLogin() {
         return login;
