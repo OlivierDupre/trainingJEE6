@@ -5,9 +5,11 @@
     <jta-data-source>jdbc/training</jta-data-source>
     <class>fr.training.trainingea.model.Credential</class>
     <class>fr.training.trainingea.model.CredentialGroup</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <class>fr.training.trainingea.model.Account</class>
+    <class>fr.training.trainingea.model.Customer</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -7,8 +7,11 @@ package fr.training.service;
 import fr.training.trainingea.model.Credential;
 import fr.training.trainingea.model.CredentialGroup;
 import fr.training.trainingea.model.CredentialGroupPK;
-import fr.training.trainingea.service.AccountManagerLocal;
 import fr.training.trainingea.service.CredentialManagerBeanLocal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,7 +32,13 @@ public class CredentialManagerBean implements CredentialManagerBeanLocal {
     public void createCredential(String login, String password) {
         Credential credential = new Credential();
         credential.setLogin(login);
-        credential.setPassword(password);
+//        try {
+            credential.setPassword(password);
+//            credential.setPassword(new String(MessageDigest.getInstance("MD5").digest(password.getBytes())));
+//        } catch (NoSuchAlgorithmException ex) {
+//            credential.setPassword(password);
+//            Logger.getLogger(CredentialManagerBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         entityManager.persist(credential);
     }

@@ -19,6 +19,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,7 @@ import javax.persistence.TypedQuery;
 /**
  * @author shuttle
  */
+@WebService
 @Stateless
 @Local(AccountManagerLocal.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
